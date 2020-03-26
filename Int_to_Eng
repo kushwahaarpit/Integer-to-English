@@ -1,0 +1,73 @@
+class Solution 
+{
+ public:
+    string numberThreeDigits(int num, string name_1_9[], string name_10_19[], string name_20_90[])
+    {
+        string res = "";
+        if (num / 100 > 0)
+        { 
+            res += name_1_9[(num/100)] + " Hundred ";
+        } 
+        num = num % 100;
+        if (num / 10 > 1) 
+        {
+            res += name_20_90[num/10 - 2] + " ";
+            num = num%10;
+            if (num >= 1 )
+            {
+                res += name_1_9[num] + " ";
+            }
+        } 
+        else if (num/10 == 1)
+        {
+            num = num% 10;
+            res += name_10_19[num] + " ";
+        } 
+        else if (num >= 1 )
+        {
+            res += name_1_9[num] + " ";
+        }
+        
+        return res;
+    }
+    string numberToWords(int num)
+    {
+        string name_1_9[] = {"Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven","Eight","Nine"};
+        string name_10_19[] = {"Ten", "Eleven", "Twelve","Thirteen","Fourteen", "Fifteen","Sixteen","Seventeen","Eighteen","Nineteen"};
+        string name_20_90[] = {"Twenty", "Thirty", "Forty","Fifty","Sixty","Seventy","Eighty","Ninety"};
+        string name_scale[] = {"","Thousand", "Million","Billion"};
+
+        vector<int>nums;
+        while (num/1000 >0)
+        {
+            nums.push_back(num%1000);
+            num = num/1000;
+        }
+        nums.push_back(num);
+        
+        
+        string res = "";
+        
+        for (int i=0;i<nums.size();++i)
+        {
+            string tmp = numberThreeDigits(nums[i], name_1_9, name_10_19, name_20_90);
+            if (tmp != "")
+            {
+                res = tmp + name_scale[i] + " " + res;    
+            }
+            else if (nums.size()==1)
+            {
+                res = "Zero";
+            }
+        }
+        
+        
+        int sp_pos = res.size()-1;
+        while (res[sp_pos] == ' ')
+        {
+            sp_pos--;
+        }
+        
+        return res.substr(0,sp_pos+1);
+    }
+};
